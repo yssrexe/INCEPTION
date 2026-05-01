@@ -1,0 +1,41 @@
+
+services:
+  # nginx:
+  #   build: requirements/nginx
+  #   ports:
+  #     - "443:443"
+  #   volumes:
+  #     - nginx_data:/usr/share/nginx/html
+  #   restart: always
+  #   networks:
+  #     - inc_network
+  #   env_file:
+  #     - .env
+
+  mariadb:
+    build: requirements/mariadb
+    volumes:
+      - maria_data:/var/lib/mysql
+    networks:
+      - inc_network
+    env_file:
+      - .env
+    restart: always
+
+volumes:
+  # nginx_data:
+  #   driver: local
+  #   driver_opts:
+  #     type: none
+  #     device: /home/yssrexe/nginx_data
+  #     o: bind
+  maria_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/yssrexe/maria_data
+      o: bind
+
+networks:
+  inc_network:
+    driver: bridge
