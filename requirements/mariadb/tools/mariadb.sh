@@ -1,41 +1,44 @@
 #!/bin/bash
+echo "mariaDB container initialization..."
 
+# stop script if any command fails
 set -e
 
-echo "Starting MariaDB setup..."
+# check if any env variable missing
+if [ -z "$DB_USER" ]; then
+    echo "DB_USER missing!"
+    exit 1
+fi
+if [ -z "$DB_PASSWORD" ]; then
+    echo "DB_PASSWORD missing!"
+    exit 1
+fi
+if [ -z "$DB_NAME" ]; then
+    echo "DB_NAME missing!"
+    exit 1
+fi
 
-# Initialize MariaDB system tables if the volume is empty
-# if [ ! -d "/var/lib/mysql/mysql" ]; then
-#     echo "Installing MariaDB system tables..."
-#     chown -R mysql:mysql /var/lib/mysql
-#     mariadb-install-db --user=mysql --datadir=/var/lib/mysql
-# fi
+# start mariaDB in background and save pid
+mysqld_safe &
+pid=$!
 
-if [ ! -d "/var/lib/mysql/$DB_NAME" ]; then
-    echo "Initializing database..."
+# wait mariaDB to get ready
+sleep 6
 
-    mysqld_safe &
+# create database, user for wordpress and give permission to user
+mysql <<EOF
+CREATE DATABASE IF NOT EXISTS $DB_NAME;
 
-    while ! mysqladmin ping --silent; do
-        sleep 1
-    done
+CREATE USER IF NOT EXISTS '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD';
 
-mysql -u root <<EOF
-CREATE DATABASE IF NOT EXISTS testdb;
-
-CREATE USER IF NOT EXISTS 'testuser'@'%' IDENTIFIED BY '1234';
-
-GRANT ALL PRIVILEGES ON testdb.* TO 'testuser'@'%';
-
-ALTER USER 'root'@'localhost' IDENTIFIED BY '123345';
+GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%';
 
 FLUSH PRIVILEGES;
 EOF
 
-mysqladmin -u root -p123345 shutdown
+# stop temporary server
+kill $pid
+wait $pid
 
-fi
-
-echo "MariaDB setup completed. Starting MariaDB server..."
-
+# run mariaDB foreground as main process
 exec mysqld_safe
