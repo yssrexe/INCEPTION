@@ -21,7 +21,6 @@ services:
     env_file:
       - .env
     restart: always
-
 volumes:
   # nginx_data:
   #   driver: local
