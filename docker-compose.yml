@@ -12,27 +12,47 @@ services:
   #   env_file:
   #     - .env
 
-  mariadb:
-    build: requirements/mariadb
+  # mariadb:
+  #   build: requirements/mariadb
+  #   volumes:
+  #     - maria_data:/var/lib/mysql
+  #   networks:
+  #     - inc_network
+  #   env_file:
+  #     - .env
+  #   restart: always
+  wordpress:
+    build: requirements/wordpress
+    ports:
+      - "80:80"
+    depends_on:
+      - mariadb
     volumes:
-      - maria_data:/var/lib/mysql
+      - wordpress_data:/var/www/html
     networks:
       - inc_network
     env_file:
       - .env
     restart: always
+
 volumes:
   # nginx_data:
   #   driver: local
   #   driver_opts:
   #     type: none
-  #     device: /home/yssrexe/nginx_data
+  #     device: /home/yael-yas/nginx_data
   #     o: bind
-  maria_data:
+  # maria_data:
+  #   driver: local
+  #   driver_opts:
+  #     type: none
+  #     device: /home/yael-yas/maria_data
+  #     o: bind
+  wordpress_data:
     driver: local
     driver_opts:
       type: none
-      device: /home/yssrexe/maria_data
+      device: /home/yael-yas/data/wordpress
       o: bind
 
 networks:
