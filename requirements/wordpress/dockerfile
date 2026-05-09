@@ -28,6 +28,5 @@ RUN chmod +x /usr/local/bin/wordpress.sh
 
 WORKDIR /var/www/html
 
-EXPOSE 9000
 
 ENTRYPOINT [ "/usr/local/bin/wordpress.sh" ]

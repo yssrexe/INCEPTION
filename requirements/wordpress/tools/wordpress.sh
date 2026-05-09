@@ -30,34 +30,23 @@ if [ ! -f "$WP_PATH/wp-config.php" ]; then
         --skip-check \
         --allow-root
 
-    SITE_URL="$WP_HTTPS_URL"
-    if [ -z "$SITE_URL" ]; then
-        DOMAIN_VALUE="${DOMAIN:-localhost}"
-        SITE_URL="http://${DOMAIN_VALUE}"
-    fi
-
-    WP_TITLE_VALUE="${WP_TITLE:-Inception WordPress}"
-    WP_ADMIN_USER_VALUE="${WP_ADMIN_USER:-admin}"
-    WP_ADMIN_PASS_VALUE="${WP_ADMIN_PASS:-admin123}"
-    WP_ADMIN_MAIL_VALUE="${WP_ADMIN_MAIL:-admin@example.com}"
-
     wp core install \
         --path="$WP_PATH" \
-        --url="$SITE_URL" \
-        --title="$WP_TITLE_VALUE" \
-        --admin_user="$WP_ADMIN_USER_VALUE" \
-        --admin_password="$WP_ADMIN_PASS_VALUE" \
-        --admin_email="$WP_ADMIN_MAIL_VALUE" \
+        --url="$WP_HTTPS_URL" \
+        --title="$WP_TITLE" \
+        --admin_user="$WP_ADMIN_USER" \
+        --admin_password="$WP_ADMIN_PASS" \
+        --admin_email="$WP_ADMIN_MAIL" \
         --skip-email \
         --allow-root
 
-    if [ -n "$WP_USER" ] && [ -n "$WP_MAIL" ] && [ -n "$WP_PASS" ]; then
-        wp user create "$WP_USER" "$WP_MAIL" \
-            --user_pass="$WP_PASS" \
-            --role=author \
-            --allow-root
-    fi
+    wp user create "$WP_USER" "$WP_MAIL" \
+        --user_pass="$WP_PASS" \
+        --role=author \
+        --allow-root
 fi
+
+
 
 chown -R www-data:www-data "$WP_PATH"
 
