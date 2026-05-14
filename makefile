@@ -4,21 +4,16 @@ COMPOSE_FILE = srcs/docker-compose.yml
 
 all: build up
 
-# build the docker images
 build: setup
 	$(COMPOSE) -f $(COMPOSE_FILE) build
 
-# do not forget -d 
 up:
-	$(COMPOSE) -f $(COMPOSE_FILE) up
+	$(COMPOSE) -f $(COMPOSE_FILE) up -d
 
 down:
 	$(COMPOSE) -f $(COMPOSE_FILE) down
 
-# you can use this 
 restart: down up
-# restart:
-# 	$(COMPOSE) -f $(COMPOSE_FILE) restart
 
 logs:
 	$(COMPOSE) -f $(COMPOSE_FILE) logs
@@ -29,7 +24,6 @@ clean:
 fclean: clean
 	docker system prune -af
 
-# remove the persistent data (in your home folder)
 fcleanall : fclean
 	sudo rm -rf /home/yael-yas/data/wordpress/* /home/yael-yas/data/mariadb/*
 
