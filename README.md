@@ -16,8 +16,8 @@ This project covers fundamental and advanced concepts in system management and a
 * **Images & Containers:** Build images via Dockerfile, understand layers and Copy-on-Write, and run live container instances.
 * **Networks & Volumes:** Connect services internally, manage persistent storage, and define communication rules.
 * **Reverse Proxy & TLS/SSL:** Use NGINX to route requests and secure connections.
-* **Databases & Caching:** Manage persistent data using MariaDB and optimize performance with Redis.
-* **Web Services & CMS:** Run WordPress with PHP-FPM, add FTP, Adminer/phpMyAdmin, and optional bonus services like static websites and microservices.
+* **Databases:** Manage persistent data using MariaDB for WordPress storage.
+* **Web Services & CMS:** Run WordPress with PHP-FPM for a complete content management stack.
 
 ---
 * Your NGINX container must be the only entry point to your infrastructure, accessible exclusively through port 443, using only the TLSv1.2 or TLSv1.3 protocol.
@@ -40,11 +40,6 @@ This project covers fundamental and advanced concepts in system management and a
 10. Apply Docker best practices (PID 1, daemons, no hacky fixes).
 11. Master best practices for Dockerfiles, images, and environment variables.
 12. Gain practical experience with web servers, reverse proxies, and TLS certificates.
-13. Add Redis caching for WordPress.
-14. Add an FTP server connected to WordPress files.
-15. Deploy a static website (HTML/CSS/JS).
-16. Add Adminer for database management.
-17. Set up a custom service of your choice and justify it during defense.
 ---
 
 ## 💡 Key Concepts Explained
@@ -203,7 +198,7 @@ Project/
 ├── srcs/                           # Source files for all services
 │   ├── docker-compose.yml          # Multi-container orchestration
 │   ├── .env                        # Environment variables (DB, user, passwords)
-│   └── requirements/               # All mandatory + bonus services
+│   └── requirements/               # All services
 │       ├── nginx/                  # NGINX container
 │       │   ├── conf/               # NGINX configuration files
 │       │   │   └── default.conf    # Main NGINX virtual host config
@@ -218,25 +213,6 @@ Project/
 │       │   ├── Dockerfile          # Build MariaDB image
 │       │   └── tools/              # Init scripts
 │       │       └── script.sh       # Create DB, users, privileges
-│       ├── bonus/                  # Bonus services (extra containers)
-│       │   ├── redis/              # Redis caching system
-│       │   │   ├── Dockerfile
-│       │   │   └── tools/
-│       │   │       └── redis.sh    # Launch Redis server
-│       │   ├── ftp/                # FTP server for file transfer
-│       │   │   ├── conf/
-│       │   │   │   └── vsftpd.conf # FTP server configuration
-│       │   │   ├── Dockerfile
-│       │   │   └── tools/
-│       │   │       └── ftp.sh      # Setup FTP users & permissions
-│       │   ├── adminer/            # Adminer DB management tool
-│       │   │   ├── Dockerfile
-│       │   │   └── tools/
-│       │   │       └── adminer.sh  # Start Adminer
-│       │   ├── static-website/     # Simple static site (HTML)
-│       │   │   ├── Dockerfile
-│       │   │   └── index.html      # Website homepage
-│       │   └── web_service/        # Set up a service of your choice that you think is useful. During the defense, you will have to justify your choice.
 │
 └── Subject/                        # School project subject
     └── subject.pdf
@@ -265,30 +241,6 @@ Project/
 - Fully isolated from other services.  
 - Stores data in **persistent Docker volumes**.  
 - Must have at least **two users**, one of which is an administrator (username not containing "admin").
-
-### 🧠 Redis (Bonus)
-- Caching service to improve WordPress performance.  
-- Speeds up database queries and reduces load on MariaDB.  
-- Optional bonus service for enhanced efficiency.
-
-### 📂 FTP (Bonus)
-- Allows access to WordPress files via FTP.  
-- Can point directly to the **WordPress volume**.  
-- Useful for managing files without entering the container manually.
-
-### 🛠 Adminer / phpMyAdmin (Bonus)
-- Web-based tool for managing **MariaDB databases**.  
-- Provides an easy interface to inspect, edit, or export database content.  
-- Useful for administration and debugging during development.
-
-### 🌐 Static Website (Bonus)
-- Optional small static site in any language **except PHP**.  
-- Can serve as a showcase, portfolio, or additional project page.  
-- Runs in its own container with an optional dedicated volume.
-
-### 🔧 Web Service (Bonus)
-- Any additional service of your choice.  
-- Must justify its usefulness during project defense.
 
 ---
 
@@ -340,13 +292,8 @@ Project/
 * **PHP-FPM:** FastCGI Process Manager for executing PHP scripts efficiently.  
 * **FastCGI:** protocol that connects NGINX to PHP-FPM.
 
-### Databases & Caching
-* **MariaDB:** relational database used by WordPress to store users, posts, settings, etc.  
-* **Redis:** in-memory cache to improve performance by reducing database load.
-
-### Extra Services
-* **FTP:** upload files directly to WordPress container or shared volumes.  
-* **Adminer / phpMyAdmin:** web-based interfaces to manage databases easily.  
+### Databases
+* **MariaDB:** relational database used by WordPress to store users, posts, settings, etc.
 
 💡 **Tip:** This cheat sheet covers all major Docker concepts needed for projects like Inception, giving you a clear mental map of containers, images, networks, and volumes.
 
@@ -359,10 +306,7 @@ Project/
 * [NGINX Documentation](https://nginx.org/en/docs/)
 * [WordPress Documentation](https://wordpress.org/support/)
 * [MariaDB Documentation](https://mariadb.com/kb/en/documentation/)
-* [Redis Documentation](https://redis.io/documentation)
 * [PHP-FPM Documentation](https://www.php.net/manual/en/install.fpm.php)
-* [Adminer Documentation](https://www.adminer.org/)
-* [phpMyAdmin Documentation](https://www.phpmyadmin.net/docs/)
 
 ---
 
@@ -389,4 +333,3 @@ By completing this project, students gain a **solid foundation** in container-ba
 ---
 
 🔥 Thank you for checking out my Inception project! Keep exploring, keep learning, and stay tuned for more exciting challenges. 👋
-
